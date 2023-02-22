@@ -65,5 +65,6 @@ group :development do
 end
 
 
+gem "webpacker"
 gem "graphql", "~> 2.0"
 gem "graphiql-rails", group: :development
