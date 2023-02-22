@@ -4,14 +4,27 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+    field :items, [Types::ItemType], null: false, description: "Return a list of items"
+    field :item, Types::ItemType, null: false, description: "Return an item" do
+      argument :id, ID, required: true
+    end
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World!"
+    field :artists, [Types::ArtistType], null: false, description: "Return a list of artists"
+
+    def items
+      Item.all
+    end
+
+    def item(id:)
+      Item.find(id)
+    rescue ActiveRecord::RecordNotFound => e
+      GraphQL::ExecutionError.new('Item does not exist.')
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new("Invalid attributes for #{e.record.class}: #{e.record.errors.full_messages.join(', ')}")
+    end
+
+    def artists
+      Artist.all
     end
   end
 end
