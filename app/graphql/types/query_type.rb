@@ -10,6 +10,9 @@ module Types
     end
 
     field :artists, [Types::ArtistType], null: false, description: "Return a list of artists"
+    field :artist, Types::ArtistType, null: false, description: "Returns an artist" do
+      argument :id, ID, required: true
+    end
 
     def items
       Item.all
@@ -25,6 +28,10 @@ module Types
 
     def artists
       Artist.all
+    end
+
+    def artist(id:)
+      Artist.find(id)
     end
   end
 end

@@ -32,6 +32,11 @@ type Mutation {
 
 type Query {
   """
+  Returns an artist
+  """
+  artist(id: ID!): Artist!
+
+  """
   Return a list of artists
   """
   artists: [Artist!]!
